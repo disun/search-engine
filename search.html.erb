@@ -1,0 +1,81 @@
+<% prev = "none" %>
+<div class="row">
+	<h3>Welcome to Architectural Peers</h3>
+	<div class="nine columns">
+		<dl class="tabs">
+			<dd><a href="/">List</a></dd>
+			<dd><a href="/mall/map">Map</a></dd>
+			<dd><a href="/mall/allstates">By State</a></dd>
+			<dd class="active"><a href="/mall/search">Search</a></dd>
+		</dl>
+<ul class="tabs-content">
+<li class="active" id="simple4Tab">	
+	<div class="panel">
+<h5> Seach by location:</h5>	
+ <%= form_tag search_mall_path, :method => :get do %> 
+ <div class="row">
+	<div class="two columns">
+	<%= label_tag :search, "Address", :class=>"label right inline" %>
+	</div>
+	<div class="six columns end">
+	<%= text_field_tag :search, params[:search] %>
+	</div>
+</div>
+ <div class="row">
+  <div class="two columns">
+  		<%= label_tag :Distance, "Distance+/-", :class=>"label right inline" %> 
+    </div>
+    <div class="two columns"><%= select_tag "Distance", options_for_select( Tenantlocation::DISTANCES, @Distance), :include_blank=>true %></div>
+  <div class="two columns"></div>
+  <div class="one columns end">
+    <%= submit_tag "Search", :class=>"small round button", :name => nil%>
+  </div>
+  </div>
+<% end %> </div><div class="panel">
+<h5>Or Fuzzy Search by name of tenants:</h5>
+	<%= form_tag search_mall_path, :method => :get do %> 
+<div class="row">
+	<div class="two columns">
+	<%= label_tag :name, "Name", :class=>"label right inline" %>
+	</div>
+	<div class="six columns">
+	<%= text_field_tag :name, params[:name] %>
+	</div>
+	<div class="two columns end">
+    <%= submit_tag "Search", :class=>"small round button", :name => nil%>
+  </div>
+</div>   
+<% end %>	</div>
+
+<hr>	
+				<%# if signed_in? then %>
+				<table>
+				<% @tenants.each_slice(6) do |slc| %>
+				     <tr>
+				        <% slc.each do |p| %>						   
+				          <%if prev != p.state %><td><b><%= link_to p.state, url_for(:controller=>'mall', :action=>'state', :id=>p.state) %></b></td><%end%>
+				           <td class="panel radius">
+				            	<span class="has-tip tip-top" title=" <%=p.city%>"><%= link_to image_tag(p.logo.url(:thumb), :border=>0), url_for( :controller=>'mall', :action=>'show', :id=>p.id ) %></span>	
+				           		&nbsp;<%= p.state %></br>
+				           		<%= link_to p.name, url_for( :controller=>'mall', :action=>'show', :id=>p.id ) %>
+				           </td>
+						   <% prev = p.state %>
+				        <% end %>
+				     </tr>
+				  <% end %>
+				</table>
+				
+				
+				<%# end %>
+	
+			</li>
+			<li id="simple1Tab">
+				List goes here
+			</li>
+			<li id="simple2Tab">
+				Map goes here
+			</li>
+		</ul>
+	</div>
+
+</div>	

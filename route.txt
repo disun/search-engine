@@ -1,0 +1,4 @@
+please add:
+      match 'mall/search' => 'mall#search', :as => :search_mall
+beyond the sentence
+    resources:mall
